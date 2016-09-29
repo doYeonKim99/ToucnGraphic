@@ -6,35 +6,39 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
-    static final int LINE=1, RECT=2 ,CIRCLE=3;
-    DrawShape da;
-    int chooseShape;
+
+    static final int LINE=1, RECT=2, CIRCLE=3;
+    int chooseShape = CIRCLE;
+    DrawShape ds;
+    int startX, startY, stopX, stopY;
+    int r;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_main);
-        //setContentView(new DrawShape(getApplicationContext()));
-        da=new DrawShape(getApplicationContext());
-        LinearLayout linear=(LinearLayout)findViewById(R.id.liner_view);
-        linear.addView(da);
+        setContentView(R.layout.activity_main);
+        ds = new DrawShape(getApplicationContext());
+        LinearLayout linear = (LinearLayout)findViewById(R.id.liner_view);
+        linear.addView(ds);
     }
-    public void drawShape(View v){
-        switch (v.getId())
-        {
+    public void drawShape(View v) {
+        switch(v.getId()){
             case R.id.but_line:
                 chooseShape=LINE;
                 break;
-            case R.id.but_circle:
+            case R.id.but_rect:
                 chooseShape=RECT;
                 break;
-            case R.id.but_rect:
+            case R.id.but_circle:
                 chooseShape=CIRCLE;
                 break;
-
         }
+        ds.invalidate();
     }
     class DrawShape extends View{
         DrawShape(Context context){
@@ -50,22 +54,36 @@ public class MainActivity extends AppCompatActivity {
             paint.setStyle(Paint.Style.STROKE);
             switch (chooseShape){
                 case LINE:
-                    canvas.drawLine(50,100,650,100,paint);
+                    canvas.drawLine(startX, startY, stopX, stopY, paint);
                     break;
                 case RECT:
                     paint.setColor(Color.MAGENTA);
                     paint.setStyle(Paint.Style.FILL);
-                    canvas.drawRect(100,100,500,250,paint);
+                    canvas.drawRect(startX, startY, stopX, stopY, paint);
                     break;
                 case CIRCLE:
-                    canvas.drawCircle(cx,cy,200,paint);
+                    r=(int)Math.sqrt(Math.pow(stopX-startX,2)+Math.pow(stopY-startY,2));
+                    canvas.drawCircle(startX, startY, 200, paint);
                     break;
             }
-            canvas.drawCircle(cx, cy, 200, paint);
-            paint.setColor(Color.MAGENTA);
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawRect(100,100,500,250,paint);
+        }
 
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            switch(event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    startX=(int)event.getX();
+                    startY=(int)event.getY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    break;
+                case MotionEvent.ACTION_UP:
+                    stopX=(int)event.getX();
+                    stopY=(int)event.getY();
+                    break;
+            }
+            invalidate();
+            return true;
         }
     }
 }
