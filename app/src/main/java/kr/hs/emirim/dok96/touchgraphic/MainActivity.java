@@ -7,16 +7,29 @@ import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
-
-    @Override
+    DrawShape da;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new DrawShape(getApplicationContext()));
+       setContentView(R.layout.activity_main);
+        //setContentView(new DrawShape(getApplicationContext()));
+        da=new DrawShape(getApplicationContext());
+        LinearLayout linear=(LinearLayout)findViewById(R.id.liner_view);
+        linear.addView(da);
     }
     public void drawShape(View v){
+        switch (v.getId())
+        {
+            case R.id.but_line:
+                break;
+            case R.id.but_circle:
+                break;
+            case R.id.but_rect:
+                break;
 
+        }
     }
     class DrawShape extends View{
         DrawShape(Context context){
