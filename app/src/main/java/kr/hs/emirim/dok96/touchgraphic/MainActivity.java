@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
+    static final int LINE=1, RECT=2 ,CIRCLE=3;
     DrawShape da;
+    int chooseShape;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_main);
@@ -23,10 +25,13 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId())
         {
             case R.id.but_line:
+                chooseShape=LINE;
                 break;
             case R.id.but_circle:
+                chooseShape=RECT;
                 break;
             case R.id.but_rect:
+                chooseShape=CIRCLE;
                 break;
 
         }
@@ -43,6 +48,19 @@ public class MainActivity extends AppCompatActivity {
             paint.setStrokeWidth(7);
             paint.setColor(Color.BLUE);
             paint.setStyle(Paint.Style.STROKE);
+            switch (chooseShape){
+                case LINE:
+                    canvas.drawLine(50,100,650,100,paint);
+                    break;
+                case RECT:
+                    paint.setColor(Color.MAGENTA);
+                    paint.setStyle(Paint.Style.FILL);
+                    canvas.drawRect(100,100,500,250,paint);
+                    break;
+                case CIRCLE:
+                    canvas.drawCircle(cx,cy,200,paint);
+                    break;
+            }
             canvas.drawCircle(cx, cy, 200, paint);
             paint.setColor(Color.MAGENTA);
             paint.setStyle(Paint.Style.FILL);
